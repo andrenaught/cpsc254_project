@@ -15,6 +15,10 @@ class SQL_handler:
 		self.db = pymysql.connect(host='localhost', user='root', password=sql_password, db='inventory')
 		self.cursor = self.db.cursor()
 
+	#close the connection
+	def close_db(self):
+		self.db.close()
+
 	#checks if username & password are valid
 	#returns data if login successful, false if unsuccessful
 	def login_check(self, username, password):
@@ -36,17 +40,60 @@ class SQL_handler:
 					return found_user
 				else:
 					print("incorrect Password")
-					return False				
+					return "incorrect_password"				
 			else:
 				#display message
 				#display_message("incorrect username")
 				print("incorrect Username")
-				return False
+				return "incorrect_username"
 			
+		except:
+			print("ERR: couldn't access user table")
+			return "SQL Error"
+
+	#return an array of all the items from the inventory table
+	def get_inv_table(self):
+		sql = "SELECT * FROM inv_table"
+		print(sql)
+
+		try:
+			self.cursor.execute(sql)
+			results = self.cursor.fetchall()
+			return results							
 		except:
 			print("ERR: couldn't access user table")
 			return False
 
-	def close_db(self):
-		self.db.close()
+	#get item data based on ID given
+	def get_item(self, ID):
+		sql = "SELECT * FROM inv_table WHERE id = " + str(ID)
+		print(sql)
 
+		try:
+			self.cursor.execute(sql)
+			results = self.cursor.fetchall()
+			return results							
+		except:
+			print("ERR: couldn't access user table")
+			return False
+
+	#edit item data based on ID given
+	def edit_item(self, ID, data):
+		name = data['name']
+		desc = data['desc']
+		price = data['price']
+		stock = data['stock']
+		public = data['is_public']
+
+		sql = "UPDATE inv_table SET name = '"+str(name)+"', description='"+str(desc)+"', price="+str(price)+", stock="+str(stock)+", is_public="+str(public)+" WHERE id = " + str(ID)
+		print(sql)
+
+		try:
+			self.cursor.execute(sql)
+			self.db.commit()
+			results = self.cursor.rowcount
+			print(str(results) + "rows affected")
+			return results							
+		except:
+			print("ERR: couldn't access user table")
+			return False
