@@ -55,8 +55,9 @@ CREATE TABLE orders_table (
 	amount int(11) DEFAULT 0,
 	reg_date TIMESTAMP,
 
-   FOREIGN KEY (product_id) REFERENCES inv_table(id),
-   FOREIGN KEY (employee_id) REFERENCES user_table(id)
+	#still want to keep orders in record even if the item or the user is deleted
+   	FOREIGN KEY (product_id) REFERENCES inv_table(id) ON DELETE SET NULL ,
+   	FOREIGN KEY (employee_id) REFERENCES user_table(id) ON DELETE SET NULL
 );
 
 #Add Test Values
@@ -81,9 +82,12 @@ VALUES
 
 
 
-#new features ideas
+#new features
 #show statistics for each item bought, graphs etc
 #output csv file of timeline of transactions of the last week / month/ year
 #peak times analytics
 #refund
 #add memberships - tracking spending habits - export a csv file of this data - use machine learning algo
+
+
+

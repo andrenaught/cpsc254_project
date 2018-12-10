@@ -92,8 +92,45 @@ class SQL_handler:
 			self.cursor.execute(sql)
 			self.db.commit()
 			results = self.cursor.rowcount
-			print(str(results) + "rows affected")
+			print(str(results) + "rows updated")
 			return results							
 		except:
-			print("ERR: couldn't access user table")
+			print("ERR: couldn't access inventory table")
+			return False
+
+	#add new item to database
+	def add_item(self, data):
+		name = data['name']
+		desc = data['desc']
+		price = data['price']
+		stock = data['stock']
+		public = data['is_public']
+
+
+		sql = "INSERT INTO inv_table (name, description, price, stock, is_public) VALUES (%s,%s,%s,%s,%s)"
+		val = (str(name), str(desc), str(price), str(stock), str(public))
+		print(sql)
+		print(val)
+
+		try:
+			self.cursor.execute(sql, val)
+			self.db.commit()
+			results = self.cursor.rowcount
+			print(str(results) + "rows inserted")
+			return results							
+		except:
+			print("ERR: couldn't access inventory table")
+			return False
+
+	#delete item from database
+	def delete_item(self, ID):
+		sql = "DELETE FROM inv_table WHERE id = " + str(ID)
+		print(sql)
+
+		try:
+			self.cursor.execute(sql)
+			self.db.commit()
+			print(self.cursor.rowcount, "items deleted")
+		except:
+			print("ERR: couldn't access inventory table")
 			return False

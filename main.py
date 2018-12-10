@@ -25,8 +25,12 @@ button.connect("clicked", inv_main.on_login_submit)
 inv_main.login_win.show_all()
 
 
-# TESTING
-inv_main.open_user_window()
+### TESTING ###
+#dummy logged in user
+#inv_main.logged_in_user['username'] = "Andre_admin"
+#inv_main.logged_in_user['password'] = "my_password"
+#inv_main.open_user_window() #start at dashboard
+### TESTING ###
 Gtk.main()
 
 #close the db connection
