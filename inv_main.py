@@ -17,7 +17,7 @@ class Inventory:
 	mysql = SQL_handler()
 
 	#init
-	def __init__(self, title, glade, window):
+	def __init__(self, title, glade):
 		self.title = title
 
 		#builder
@@ -25,9 +25,14 @@ class Inventory:
 		self.builder.add_from_file(glade)
 
 		#window
-		self.window = self.builder.get_object(window)
-		self.window.set_title(title)
-		self.window.connect("destroy", Gtk.main_quit) #close window button
+		self.login_win = self.builder.get_object("login_window")
+		self.login_win.set_title("login window")
+		self.login_win.connect("destroy", Gtk.main_quit) #close window button
+
+		#window 2
+		self.user_dash_win = self.builder.get_object("user_dashboard_window")
+		self.user_dash_win.set_title("user dashboard")
+		self.user_dash_win.connect("destroy", Gtk.main_quit) #close window button
 
 	#signal handlers
 	def on_login_submit(self, widget):
@@ -40,5 +45,27 @@ class Inventory:
 		print ("logging in with credentials: ")
 		print ("USERNAME: " + str(username))
 		print ("PASSWORD: " + str(password))
-		self.mysql.login_check(username, password)
+		result = self.mysql.login_check(username, password)
+
+		if (result != False):
+			print ("log em in!")
+			self.open_user_window()
+
+	#after user logs in, this leads them to the user window		
+	def open_user_window(self):
+		print ("welcome to the user dashboard")	
+		self.user_dash_win.show()
+		self.login_win.unrealize()
+		#self.window.hide()
+
+		#setup signals
+		log_out = self.builder.get_object("menu_logout")
+		log_out.connect("button-press-event", self.log_me_out)
+		#print(log_out.get_text())
+
+	def log_me_out(self, widget, event):
+		print("logging you out")
+
+
+
 	

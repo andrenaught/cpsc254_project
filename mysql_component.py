@@ -18,7 +18,7 @@ class SQL_handler:
 	#checks if username & password are valid
 	#returns data if login successful, false if unsuccessful
 	def login_check(self, username, password):
-		sql = "SELECT * FROM user_table WHERE username = '" + str(username) + "'"
+		sql = "SELECT * FROM user_table WHERE BINARY username = '" + str(username) + "'"
 		print(sql)
 
 		try:
@@ -26,16 +26,17 @@ class SQL_handler:
 			results = self.cursor.fetchall()
 			
 			if (len(results) == 1):
-				print("found user -> " + str(username))
 				found_user = results[0]
+				found_username = found_user[1]
 				found_password = found_user[2]
+				print("found user -> " + str(found_username))
+
 				if (password == found_password):
 					print("correct password")
+					return found_user
 				else:
 					print("incorrect Password")
-
-				print(found_password)
-				return found_user
+					return False				
 			else:
 				#display message
 				#display_message("incorrect username")
