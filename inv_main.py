@@ -204,6 +204,12 @@ class Inventory:
 
 		#setup signal for submit button
 		add_item_button = self.builder.get_object("confirm_new_item_button")
+		#delete old signal, this caused bug where item was made multiple times if user pressed cancel
+		try:
+			add_item_button.disconnect_by_func(self.confirm_new_item)
+			print("resetted signal")
+		except:
+			print("no need")
 		add_item_button.connect("clicked", self.confirm_new_item, name_input, desc_input, price_input, stock_input, is_public_input)
 
 		#setup signal for cancel button
@@ -295,10 +301,22 @@ class Inventory:
 
 		#setup signal for update button
 		edit_item_button = self.builder.get_object("confirm_edit_item")
+		#delete old signal, this caused bug where item was made multiple times if user pressed cancel
+		try:
+			edit_item_button.disconnect_by_func(self.confirm_edit_item)
+			print("resetted signal")
+		except:
+			print("no need")
 		edit_item_button.connect("clicked", self.confirm_edit_item, ID, name_input, desc_input, price_input, stock_input, is_public_input)
 
 		#setup signal for delete button
 		cancel_button = self.builder.get_object("confirm_delete_item")
+		#delete old signal, this caused bug where item was made multiple times if user pressed cancel
+		try:
+			cancel_button.disconnect_by_func(self.delete_item)
+			print("resetted signal")
+		except:
+			print("no need")
 		cancel_button.connect("clicked", self.delete_item, ID)
 
 		#setup signal for cancel button
