@@ -4,6 +4,8 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from mysql_component import SQL_handler #SQL_handler class
 
+import csv
+
 ##### Inventory Class #####
 # This handles the logic between the GUI and the data from mySQL
 class Inventory:
@@ -247,6 +249,37 @@ class Inventory:
 		#open add new item window
 		add_new_item = self.builder.get_object("add_new_item_button")
 		add_new_item.connect("clicked", self.on_add_new_item_click)
+
+		#download csv
+		order_sheet = self.builder.get_object("order_sheet_button")
+		order_sheet.connect("clicked", self.download_orders)
+
+		#add new order
+		#add_new_order = self.builder.get_object("make_transaction_button")
+		#add_new_order.connect("clicked", self.on_add_new_transaction)
+
+
+	#download csv of orders table
+	def download_orders(self, widget):
+		data = self.mysql.get_orders_table()
+		#print(data)
+		data_arr = []
+		for row in data:
+			product_name = self.mysql.get_item(row[1])
+			row = list(row)
+			row[1] = product_name[0][1]
+			temp = row
+
+			data_arr.append(temp)
+
+
+		#print(data_arr)
+		with open('order_list.csv', 'w') as f:
+			writer = csv.writer(f)
+			#writer.writerow(['Column 1', 'Column 2'])
+			#for h in data_arr:
+			writer.writerows(data_arr)
+
 
 	#log the current user out
 	def log_me_out(self, widget, event):

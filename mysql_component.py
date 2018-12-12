@@ -134,3 +134,16 @@ class SQL_handler:
 		except:
 			print("ERR: couldn't access inventory table")
 			return False
+
+	#get orders table data
+	def get_orders_table(self):
+		sql = "SELECT * FROM orders_table"
+		print(sql)
+
+		try:
+			self.cursor.execute(sql)
+			results = self.cursor.fetchall()
+			return results							
+		except:
+			print("ERR: couldn't access user table")
+			return False

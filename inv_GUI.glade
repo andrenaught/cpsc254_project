@@ -445,7 +445,6 @@
         </child>
         <child>
           <object class="GtkButton" id="make_transaction_button">
-            <property name="label" translatable="yes">Make Transaction</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
@@ -455,8 +454,8 @@
           </packing>
         </child>
         <child>
-          <object class="GtkButton" id="analytics_button">
-            <property name="label" translatable="yes">Analytics</property>
+          <object class="GtkButton" id="order_sheet_button">
+            <property name="label" translatable="yes">Get Order Sheet</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
